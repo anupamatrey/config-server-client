@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: config-client
+  cloud:    config:      uri: https://config-server-1216.herokuapp.com/
+
+server:
+  port: ${PORT:9000}      
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: https://eureka-1216.herokuapp.com/eureka/  

@@ -1,6 +1,7 @@
 spring:
   application:
-    name: config-client  profiles:    active: development  cloud:    config:      uri: https://config-server-1216.herokuapp.com/
+    name: config-client
+  cloud:    config:      uri: https://config-server-1216.herokuapp.com/
 
 server:
   port: ${PORT:9000}      
