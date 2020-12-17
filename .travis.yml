@@ -1,0 +1,45 @@
+sudo: required
+language: java
+jdk:
+  - openjdk8
+
+services:
+  - docker
+  
+env:
+  global:
+  #- secure: "encrypted-sonar-token"
+  #- secure: "encrypted-dockerhub-username"
+  #- secure: "encrypted-dockerhub-password"
+  #- secure: "encrypted-heroku-api-key"
+  - COMMIT=${TRAVIS_COMMIT::7}
+
+before_script:
+  - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+  - curl https://cli-assets.heroku.com/install.sh | sh  #install heroku
+  - docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+  - export IMAGE_NAME=anupamattrey/config-server-client
+  - docker build -t $IMAGE_NAME:$COMMIT .
+  - docker tag $IMAGE_NAME:$COMMIT registry.heroku.com/$HEROKU_APP/web
+  - docker push registry.heroku.com/$HEROKU_APP/web;
+
+before_install:
+  - chmod +x mvnw
+
+script:
+  - ./mvnw clean install -B
+  
+deploy:   
+        provider: script
+        script: 
+               heroku container:release web --app $HEROKU_APP
+        on:
+          branch: master
+  
+notifications:
+  email:
+    recipients:
+      - anupam.attrey@hotmail.com
+    on_success: always # default: change
+    on_failure: always # default: always
+
