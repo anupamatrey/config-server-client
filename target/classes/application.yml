@@ -1,8 +1,5 @@
-spring:
-  application:
-    name: config-client  cloud:    config:      uri:      - https://config-server-1216.herokuapp.com/
-server:
-  port: ${PORT:9000}      
+spring:  application:    name: config-client  cloud:    config:      uri:      - https://config-server-1216.herokuapp.com/
+server:  port: ${PORT:9000}    
 
 eureka:
   client:
